@@ -1,0 +1,28 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodları Çek (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Buildozer ile APK Oluştur
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: master
+
+      - name: APK'yı Yükle (Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: acik-pisti-apk
+          path: bin/*.apk
